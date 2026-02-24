@@ -1,7 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+
 import { UserProfileEntity } from './entities/user_profile.entity';
+import { ProfileNotFoundError } from './errors/profile.errors';
 
 @Injectable()
 export class ProfileService {
@@ -11,16 +13,9 @@ export class ProfileService {
   ) {}
 
   async getProfileById(id: string) {
-    const profile = await this.profileRepo.findOne({
-      where: { id },
-      // relations: { credentials: true }, // optionnel
-    });
+    const profile = await this.profileRepo.findOne({ where: { id } });
+    if (!profile) throw new ProfileNotFoundError(id);
 
-    if (!profile) {
-      throw new NotFoundException('Profile not found');
-    }
-
-    // profil public
     return {
       id: profile.id,
       username: profile.username,

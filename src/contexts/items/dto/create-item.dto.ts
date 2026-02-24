@@ -1,4 +1,4 @@
-import { IsIn, IsString, IsUUID, Min, MinLength } from 'class-validator';
+import { IsIn, IsString, IsUUID, MinLength } from 'class-validator';
 
 export class CreateItemDto {
   @IsString()
@@ -11,9 +11,6 @@ export class CreateItemDto {
 
   @IsIn(['LOST', 'FOUND'])
   status: 'LOST' | 'FOUND';
-
-  @IsUUID()
-  ownerProfileId: string;
 
   @IsUUID()
   categoryId: string;

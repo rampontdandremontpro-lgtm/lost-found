@@ -1,0 +1,33 @@
+export const PERM = {
+  ITEM_CREATE: 1n << 0n,
+  ITEM_UPDATE: 1n << 1n,
+  ITEM_DELETE: 1n << 2n,
+  ITEM_READ:   1n << 3n,
+
+  CATEGORY_CREATE: 1n << 4n,
+  CATEGORY_DELETE: 1n << 5n,
+  CATEGORY_READ:   1n << 6n,
+
+  PROFILE_READ: 1n << 7n,
+
+  ADMIN: 1n << 60n,
+} as const;
+
+export const ROLE_PERMS = {
+  USER:
+    PERM.ITEM_CREATE |
+    PERM.ITEM_READ |
+    PERM.CATEGORY_READ |
+    PERM.PROFILE_READ,
+
+  ADMIN:
+    PERM.ITEM_CREATE |
+    PERM.ITEM_UPDATE |
+    PERM.ITEM_DELETE |
+    PERM.ITEM_READ |
+    PERM.CATEGORY_CREATE |
+    PERM.CATEGORY_DELETE |
+    PERM.CATEGORY_READ |
+    PERM.PROFILE_READ |
+    PERM.ADMIN,
+} as const;

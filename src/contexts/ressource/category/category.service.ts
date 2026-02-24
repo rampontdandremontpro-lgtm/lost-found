@@ -1,8 +1,11 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+
 import { CategoryEntity } from './entities/category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
+
+import { CategoryAlreadyExistsError, CategoryNotFoundError } from './errors/category.errors';
 
 @Injectable()
 export class CategoryService {
@@ -19,9 +22,7 @@ export class CategoryService {
       .where('LOWER(c.name) = LOWER(:name)', { name })
       .getOne();
 
-    if (existing) {
-      throw new BadRequestException('Category already exists');
-    }
+    if (existing) throw new CategoryAlreadyExistsError(name);
 
     const category = this.categoryRepo.create({ name });
     return this.categoryRepo.save(category);
@@ -33,15 +34,15 @@ export class CategoryService {
 
   async findOne(id: string) {
     const category = await this.categoryRepo.findOne({ where: { id } });
-    if (!category) throw new NotFoundException('Category not found');
+    if (!category) throw new CategoryNotFoundError(id);
     return category;
   }
 
   async remove(id: string) {
     const category = await this.categoryRepo.findOne({ where: { id } });
-    if (!category) throw new NotFoundException('Category not found');
+    if (!category) throw new CategoryNotFoundError(id);
 
     await this.categoryRepo.delete(id);
-    return { message: 'Category deleted' };
+    return { deleted: true };
   }
 }

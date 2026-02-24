@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { UserCredentialsEntity } from '../../auth/entities/user_credentials.entity';
 
 @Entity('user_profiles')
@@ -18,4 +18,11 @@ export class UserProfileEntity {
 
   @Column({ name: 'credentials_id', type: 'uuid' })
   credentialsId: string;
+
+  @Column({
+    name: 'permission_mask',
+    type: 'bigint',
+    default: '0',
+  })
+  permissionMask: string;
 }

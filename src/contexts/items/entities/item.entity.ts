@@ -2,6 +2,8 @@ import { Column, CreateDateColumn, Entity, Index, JoinColumn, ManyToOne, Primary
 import { UserCredentialsEntity } from '../../auth/entities/user_credentials.entity';
 import { UserProfileEntity } from 'src/contexts/profile/entities/user_profile.entity';
 import { CategoryEntity } from 'src/contexts/ressource/category/entities/category.entity';
+import { OneToMany } from 'typeorm';
+import { ClaimEntity } from '../../claims/entities/claim.entity';
 
 export type ItemStatus = 'LOST' | 'FOUND';
 
@@ -37,4 +39,8 @@ export class ItemEntity {
 
   @Column({ name: 'category_id', type: 'uuid' })
   categoryId: string;
+
+  @OneToMany(() => ClaimEntity, (c) => c.item)
+ claims: ClaimEntity[];
+
 }
